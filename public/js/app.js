@@ -88,6 +88,33 @@ define(['jquery'], function ($) {
   }).on('mouseup', function () {
     $canvas.off('mousemove');
     save();
+    $('#save').click();
+  });
+
+  var stack = [];
+  $('#save').on('click', function () {
+    // save the image
+    var dataUrl = canvas.toDataURL();
+
+    // stack the images behind
+    var image = new Image();
+    image.src = dataUrl;
+    stack.push(image);
+    $('#stage').append(image, $canvas);
+
+    // fade the old images
+    stack.reverse().forEach(function (img, i) {
+      $(img).css({
+        opacity: 1 - i / 8
+      });
+    });
+    stack.reverse();
+
+    // $('#stage').css({
+    //   backgroundImage: 'url(' + dataUrl + ')'
+    // });
+
+    clear();
   });
 
   return {};
