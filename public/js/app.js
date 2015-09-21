@@ -33,6 +33,13 @@ define(['jquery'], function ($) {
     context.clearRect(0, 0, canvas.width, canvas.height);
   };
 
+  var getMouseCoords = function (e) {
+    return {
+      x: e.offsetX,
+      y: e.offsetY,
+    };
+  };
+
   $('#undo').on('click', function () {
     var dataUrl = images.pop();
     dataUrl = images.pop();
@@ -52,16 +59,31 @@ define(['jquery'], function ($) {
   context.lineCap = 'round';
   // context.lineJoin = 'round';
   // context.lineJoin = 'bevel';
-  context.lineWidth = 5;
+  var width = 10;
+  context.lineWidth = width;
 
   $canvas.on('mousedown', function (e) {
+    var lastMoveCoords;
+    var coords = getMouseCoords(e);
     // start drawing
     context.beginPath();
-    context.moveTo(e.offsetX, e.offsetY);
+    context.moveTo(coords.x, coords.y);
 
     $canvas.on('mousemove', function (e) {
-      context.lineTo(e.offsetX, e.offsetY);
+      var coords = getMouseCoords(e);
+
+      // vary line width based on distance
+      if (lastMoveCoords) {
+        var distX = coords.x - lastMoveCoords.x;
+        var distY = coords.y - lastMoveCoords.y;
+        var dist = Math.sqrt(distX * distX + distY * distY);
+
+        context.lineWidth = Math.max(width - dist, 1);
+      }
+
+      context.lineTo(coords.x, coords.y);
       context.stroke();
+      lastMoveCoords = coords;
     });
   }).on('mouseup', function () {
     $canvas.off('mousemove');

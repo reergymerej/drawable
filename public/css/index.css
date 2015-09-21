@@ -3,10 +3,7 @@ body {
   background-color: #666;
 }
 
-canvas {
-  background-color: #fff;
-  cursor: default;
-}
+
 
 .palette {
   list-style: none;
@@ -16,4 +13,22 @@ canvas {
   display: inline-block;
   width: 20px;
   height: 20px;
+}
+
+#stage {
+  border: 1px solid #333;
+  position: relative;
+  width: 400px;
+  height: 400px;
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/7/7b/Donkey_1_arp_750px.jpg)
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  /*background-color: pink;*/
+  cursor: default;
 }
